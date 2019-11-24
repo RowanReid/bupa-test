@@ -1,54 +1,30 @@
-var codeTest = false;
+var codeTest2 = false;
 
-function onConversationsAPIReady() {
+async function onConversationsAPIReady2() {
   
-  if(codeTest == true) {
-
+  if(codeTest2 == true) {
     return;
-
-  }else {
-
-    codeTest = true;
-
-    window.hsConversationsSettings = {
-
-      loadImmediately: false,
-
-    };
-
- 
-
+  // else we are good to go
+  } else {
+    
+    // Attempt to clear and reset the chatbot entirely on page load
     window.HubSpotConversations.clear();
-    window.HubSpotConversations.widget.refresh();
-    window.HubSpotConversations.widget.remove();
-    window.HubSpotConversations.widget.load();
-    window.HubSpotConversations.on('conversationClosed', payload => {
-      window.HubSpotConversations.clear();
-      window.HubSpotConversations.widget.refresh();
-      window.HubSpotConversations.widget.remove();
-      window.HubSpotConversations.widget.load();
-      console.log('Conversation Closed');
-    });
-
+    
   }
 }
 
 if (window.HubSpotConversations) {
 
-  onConversationsAPIReady();
+  onConversationsAPIReady2();
 
 }else {
-  window.hsConversationsOnReady = [onConversationsAPIReady];
-
+  window.hsConversationsOnReady = [onConversationsAPIReady2];
 }
 
-setTimeout(function(){ 
-
-  if(codeTest != true) {
-
-    onConversationsAPIReady();
-    console.log('Timer done');
-
-  }
-
-}, 10000);
+// add an event listener that will clear the cookies on page unload
+window.addEventListener('beforeunload', function(e) {
+   if(window.HubSpotConversations) {
+     
+     window.HubSpotConversations.clear();
+   }
+});
